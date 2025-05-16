@@ -1,5 +1,4 @@
 # 从pydantic_ai导入Agent和RunContext类
-from typing import Literal
 from pydantic_ai import Agent, RunContext
 
 # 从utils.llm导入模型
@@ -47,5 +46,5 @@ async def generate_chart(
         f"根据查询出的结果生成{chart_type}，以下是查询出的结果",
         f"```json\n{result}\n```",
     )
-    result = await chart_agent.run(query, deps=None)
+    result = await chart_agent.run(query, deps=ctx.deps)
     return result.output
