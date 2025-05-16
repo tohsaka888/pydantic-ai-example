@@ -27,7 +27,12 @@ root_agent = Agent(
 @root_agent.tool
 async def search_data(ctx: RunContext[AgentDeps], question: str) -> object:
     """搜索数据"""
-    result = await mongo_agent.run(question, deps=ctx.deps)
+    query = (
+        "根据用户的需求生成MongoDB查询语句, 以下是用户的需求",
+        question,
+        f"当前的系统时间为：{ctx.deps.current_time}",
+    )
+    result = await mongo_agent.run(query, deps=ctx.deps)
     return result.output
 
 
@@ -35,7 +40,7 @@ async def search_data(ctx: RunContext[AgentDeps], question: str) -> object:
 async def generate_chart(
     ctx: RunContext[AgentDeps],
     result: object,
-    chart_type: Literal["柱状图", "折线图", "饼图"],
+    chart_type: str = "折线图",
 ) -> str:
     """生成图表"""
     query = (
